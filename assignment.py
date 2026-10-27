@@ -1,34 +1,35 @@
-# Do NOT use sorted() or .sort() - write the algorithms yourself.
-
-# Exercise 1
 def bubble_sort(data):
     n = len(data)
-    for i in range(n - 1):
+    for i in range(n):
         swapped = False
-        for j in range(n - 1 - i):
+        for j in range(n - i - 1):
             if data[j] > data[j + 1]:
-                data[j], data[j + 1] = data[j + 1], data[j]
+                temp = data[j]
+                data[j] = data[j + 1]
+                data[j + 1] = temp
                 swapped = True
-        if not swapped:
+        if swapped == False:
             break
     return data
 
-# Exercise 2
+
 def bubble_sort_trace(data):
     trace = []
     n = len(data)
-    for i in range(n - 1):
+    for i in range(n):
         swapped = False
-        for j in range(n - 1 - i):
+        for j in range(n - i - 1):
             if data[j] > data[j + 1]:
-                data[j], data[j + 1] = data[j + 1], data[j]
+                temp = data[j]
+                data[j] = data[j + 1]
+                data[j + 1] = temp
                 swapped = True
-        if not swapped:
+        if swapped == False:
             break
         trace.append(data.copy())
     return trace
 
-# Exercise 3
+
 def insertion_sort(data):
     for i in range(1, len(data)):
         key = data[i]
@@ -39,7 +40,7 @@ def insertion_sort(data):
         data[j + 1] = key
     return data
 
-# Exercise 4
+
 def insertion_sort_trace(data):
     trace = []
     for i in range(1, len(data)):
@@ -52,7 +53,7 @@ def insertion_sort_trace(data):
         trace.append(data.copy())
     return trace
 
-# Exercise 5
+
 def rank_students(records):
     for i in range(1, len(records)):
         key = records[i]

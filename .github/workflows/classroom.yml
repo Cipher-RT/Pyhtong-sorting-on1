@@ -1,0 +1,115 @@
+name: Autograding Tests
+
+on:
+  push:
+    paths:
+      - 'assignment.py'
+      - 'test_assignment.py'
+  workflow_dispatch:
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install pytest
+        run: pip install -r requirements.txt
+
+      - name: Ex 1 - Bubble sort
+        id: ex1_bubble_sort
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Ex 1 - Bubble sort
+          command: pytest test_assignment.py::test1_bubble_sort
+          timeout: 2
+          max-score: 1
+
+      - name: Ex 1 - Sorts in place
+        id: ex1_in_place
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Ex 1 - Sorts in place
+          command: pytest test_assignment.py::test1_in_place
+          timeout: 2
+          max-score: 1
+
+      - name: Ex 2 - Bubble sort trace
+        id: ex2_bubble_trace
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Ex 2 - Bubble sort trace
+          command: pytest test_assignment.py::test2_bubble_trace
+          timeout: 2
+          max-score: 2
+
+      - name: Ex 3 - Insertion sort
+        id: ex3_insertion_sort
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Ex 3 - Insertion sort
+          command: pytest test_assignment.py::test3_insertion_sort
+          timeout: 2
+          max-score: 1
+
+      - name: Ex 3 - Sorts in place
+        id: ex3_in_place
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Ex 3 - Sorts in place
+          command: pytest test_assignment.py::test3_in_place
+          timeout: 2
+          max-score: 1
+
+      - name: Ex 4 - Insertion sort trace
+        id: ex4_insertion_trace
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Ex 4 - Insertion sort trace
+          command: pytest test_assignment.py::test4_insertion_trace
+          timeout: 2
+          max-score: 2
+
+      - name: Ex 5 - Rank students
+        id: ex5_rank_students
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Ex 5 - Rank students
+          command: pytest test_assignment.py::test5_rank_students
+          timeout: 2
+          max-score: 1
+
+      - name: Ex 5 - Ties keep order
+        id: ex5_ties_keep_order
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Ex 5 - Ties keep order
+          command: pytest test_assignment.py::test5_ties_keep_order
+          timeout: 2
+          max-score: 1
+
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          EX1_BUBBLE_SORT_RESULTS: "${{ steps.ex1_bubble_sort.outputs.result }}"
+          EX1_IN_PLACE_RESULTS: "${{ steps.ex1_in_place.outputs.result }}"
+          EX2_BUBBLE_TRACE_RESULTS: "${{ steps.ex2_bubble_trace.outputs.result }}"
+          EX3_INSERTION_SORT_RESULTS: "${{ steps.ex3_insertion_sort.outputs.result }}"
+          EX3_IN_PLACE_RESULTS: "${{ steps.ex3_in_place.outputs.result }}"
+          EX4_INSERTION_TRACE_RESULTS: "${{ steps.ex4_insertion_trace.outputs.result }}"
+          EX5_RANK_STUDENTS_RESULTS: "${{ steps.ex5_rank_students.outputs.result }}"
+          EX5_TIES_KEEP_ORDER_RESULTS: "${{ steps.ex5_ties_keep_order.outputs.result }}"
+        with:
+          runners: ex1_bubble_sort,ex1_in_place,ex2_bubble_trace,ex3_insertion_sort,ex3_in_place,ex4_insertion_trace,ex5_rank_students,ex5_ties_keep_order
